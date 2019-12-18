@@ -20,14 +20,15 @@ class Cipher:
 
     def __init__(self, encodePassword: bytearray) -> None:
         self.encodePassword = encodePassword.copy()
-        self.aes = AES.new(encodePassword, AES.MODE_ECB)
+        self.e_aes = AES.new(encodePassword, AES.MODE_EAX)
+        self.d_aes = AES.new(encodePassword, AES.MODE_EAX, self.e_aes.nonce)
 
     def encode(self, bs: bytearray):
-        bs = bytearray(self.aes.encrypt(self.pad(bs)))
+        bs = bytearray(self.e_aes.encrypt(bs))
 
     def decode(self, bs: bytearray):
-        data = self.aes.decrypt(bs)
-        bs = data[:-data[-1]]
+        # data = self.aes.decrypt(bs)
+        bs = bytearray(self.d_aes.decrypt(bs))
         # bs = bytearray(self.aes.decrypt(bs))
 
     @staticmethod
