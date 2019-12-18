@@ -16,7 +16,7 @@ class LsServer(SecureSocket):
                  loop: asyncio.AbstractEventLoop,
                  password: bytearray,
                  listenAddr: net.Address) -> None:
-        super().__init__(loop=loop, cipher=Cipher.NewCipher(password))
+        super().__init__(loop=loop, cipher=Cipher(password))
         self.listenAddr = listenAddr
 
     async def listen(self, didListen: typing.Callable=None):

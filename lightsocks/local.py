@@ -17,7 +17,7 @@ class LsLocal(SecureSocket):
                  password: bytearray,
                  listenAddr: net.Address,
                  remoteAddr: net.Address) -> None:
-        super().__init__(loop=loop, cipher=Cipher.NewCipher(password))
+        super().__init__(loop=loop, cipher=Cipher(password))
         self.listenAddr = listenAddr
         self.remoteAddr = remoteAddr
 

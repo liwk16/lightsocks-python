@@ -1,3 +1,6 @@
+from Crypto.Cipher import AES
+
+
 class Cipher:
     """
         Cipher class is for the encipherment of data flow.
@@ -15,22 +18,25 @@ class Cipher:
         It just shifts one step to make a simply encryption, encode and decode.
     """
 
-    def __init__(self, encodePassword: bytearray,
-                 decodePassword: bytearray) -> None:
+    def __init__(self, encodePassword: bytearray) -> None:
         self.encodePassword = encodePassword.copy()
-        self.decodePassword = decodePassword.copy()
+        self.aes = AES.new(encodePassword, AES.MODE_ECB)
 
     def encode(self, bs: bytearray):
-        for i, v in enumerate(bs):
-            bs[i] = self.encodePassword[v]
+        bs = bytearray(self.aes.encrypt(self.pad(bs)))
 
     def decode(self, bs: bytearray):
-        for i, v in enumerate(bs):
-            bs[i] = self.decodePassword[v]
+        bs = bytearray(self.aes.decrypt(bs).rstrip())
 
-    @classmethod
-    def NewCipher(cls, encodePassword: bytearray):
-        decodePassword = encodePassword.copy()
-        for i, v in enumerate(encodePassword):
-            decodePassword[v] = i
-        return cls(encodePassword, decodePassword)
+    @staticmethod
+    def pad(text):
+        while len(text) % 16 != 0:
+            text += b' '
+        return text
+
+    # @classmethod
+    # def NewCipher(cls, encodePassword: bytearray):
+    #     decodePassword = encodePassword.copy()
+    #     for i, v in enumerate(encodePassword):
+    #         decodePassword[v] = i
+    #     return cls(encodePassword, decodePassword)

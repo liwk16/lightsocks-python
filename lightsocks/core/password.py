@@ -5,8 +5,8 @@
 import random
 import base64
 
-PASSWORD_LENGTH = 256
-IDENTITY_PASSWORD = bytearray(range(256))
+PASSWORD_LENGTH = 16
+IDENTITY_PASSWORD = bytearray(range(16))
 
 
 class InvalidPasswordError(Exception):
