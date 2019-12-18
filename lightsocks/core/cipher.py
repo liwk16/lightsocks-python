@@ -33,12 +33,16 @@ class Cipher:
     def decode(self, bs: bytearray):
         # return bytearray(self.aes.decrypt(bs).rstrip(b'\r'))
         # bs = bytearray(self.d_aes.decrypt(bs))
-        return bytearray(self.aes.decrypt(base64.decodebytes(bytes(bs))).rstrip(b'\0'))
+        data = bytearray(self.aes.decrypt(base64.decodebytes(bytes(bs))))
+        return data[:-data[-1]]
 
     @staticmethod
     def pad(text):
         length = 16 - (len(text) % 16)
-        text += b'\0' * length
+        if length != 0:
+            text += bytes([length]) * length
+        else:
+            text += bytes([16]) * 16
         return text
 
     # @classmethod
