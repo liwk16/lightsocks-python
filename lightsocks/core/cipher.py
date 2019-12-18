@@ -26,10 +26,10 @@ class Cipher:
 
     def encode(self, bs: bytearray):
         # bs = bytearray(self.e_aes.encrypt(bs))
-        bs = bytearray(self.aes.encrypt(self.pad(bs)))
+        return bytearray(self.aes.encrypt(self.pad(bs)))
 
     def decode(self, bs: bytearray):
-        bs = bytearray(self.aes.decrypt(bs).rstrip(b'\r'))
+        return bytearray(self.aes.decrypt(bs).rstrip(b'\r'))
         # bs = bytearray(self.d_aes.decrypt(bs))
 
     @staticmethod

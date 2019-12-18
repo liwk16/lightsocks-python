@@ -25,7 +25,7 @@ class SecureSocket:
         logger.debug('%s:%d decodeRead %r', *conn.getsockname(), data)
 
         bs = bytearray(data)
-        self.cipher.decode(bs)
+        bs = self.cipher.decode(bs)
         return bs
 
     async def encodeWrite(self, conn: Connection, bs: bytearray):
@@ -33,7 +33,7 @@ class SecureSocket:
 
         bs = bs.copy()
 
-        self.cipher.encode(bs)
+        bs = self.cipher.encode(bs)
         await self.loop.sock_sendall(conn, bs)
 
     async def encodeCopy(self, dst: Connection, src: Connection):
