@@ -1,4 +1,5 @@
 from Crypto.Cipher import AES
+import base64
 
 
 class Cipher:
@@ -26,16 +27,18 @@ class Cipher:
 
     def encode(self, bs: bytearray):
         # bs = bytearray(self.e_aes.encrypt(bs))
-        return bytearray(self.aes.encrypt(self.pad(bs)))
+        # return bytearray(self.aes.encrypt(self.pad(bs)))
+        return bytearray(base64.encodebytes(self.aes.encrypt(self.pad(bs))))
 
     def decode(self, bs: bytearray):
-        return bytearray(self.aes.decrypt(bs).rstrip(b'\r'))
+        # return bytearray(self.aes.decrypt(bs).rstrip(b'\r'))
         # bs = bytearray(self.d_aes.decrypt(bs))
+        return bytearray(self.aes.decrypt(base64.decodebytes(bytes(bs))).rstrip(b'\0'))
 
     @staticmethod
     def pad(text):
         length = 16 - (len(text) % 16)
-        text += bytes([length]) * length
+        text += b'\0' * length
         return text
 
     # @classmethod
